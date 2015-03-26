@@ -32,7 +32,8 @@ start = idx[0]+1500
 X = eeg[start:,0:30]
 X_scaled = preprocessing.scale(X)
 
-ica = FastICA(n_components=13)
+nICs = 16
+ica = FastICA(n_components=nICs)
 S = ica.fit_transform(X_scaled) # temporal
 A = ica.mixing_ # spatial 
 print "Done with ICA"
@@ -41,14 +42,14 @@ print "Done with ICA"
 plt.clf()
 xi = np.linspace(-90, 90, 100)
 yi = np.linspace(-90, 90, 200)
-for i in range(1,17):
+for i in range(1,nICs+1):
     ax = plt.subplot(4,4,i)
     ax.set_xticklabels([])
     ax.set_yticklabels([])
     plt.xlim(-90, 90)
     plt.ylim(-90, 90)
     # grid the data.
-    if i <= 13:
+    if i <= nICs:
         zi = griddata(coords[:,0], coords[:,1], A[:,i-1], xi, yi, interp='linear')
         # contour the gridded data, plotting dots at the nonuniform data points.
         ax.contour(xi, yi, zi, 15, linewidths=0.5, colors='k')
@@ -57,16 +58,26 @@ for i in range(1,17):
         # plot data points.
         for c in range(len(channames)):
             ax.scatter(coords[c,0], coords[c,1], marker=r"$ {} $".format(channames[c]) , c='b', s=50, zorder=10, edgecolors='none')
-    plt.title('IC%d' %(i))
+    plt.title('IC%d' %(i),size=8)
 #plt.title('Microstates?')
 plt.savefig("spatial_white_13.png",dpi=600)
 
 plt.clf()
-for i in range(13):
+for i in range(nICs):
     ax.set_xticklabels([])
     ax.set_yticklabels([])
-    ax = plt.subplot(13,1,i+1)
+    ax = plt.subplot(nICs,1,i+1)
     ax.plot(range(S.shape[0]),S[:,i],linewidth=0.2)
-    plt.title('IC%d' %(i+1))
+    plt.title('IC%d' %(i+1),size=8)
 #plt.title('Temporal components')
 plt.savefig("temporal_white_13.png",dpi=600)
+
+plt.clf()
+for i in range(nICs):
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax = plt.subplot(nICs,1,i+1)
+    ax.plot(range(50000),S[:50000,i],linewidth=0.2)
+    plt.title('IC%d' %(i+1),size=8)
+#plt.title('Temporal components')
+plt.savefig("temporal_white_ten_sec.png",dpi=600)
