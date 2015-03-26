@@ -1,8 +1,10 @@
 import scipy.io
 import matplotlib.pyplot as plt
+import matplotlib
 import pylab
 import math
 from sklearn import linear_model
+import obspy.imaging.spectrogram as obs_spec
 import numpy as np
 
 mat = scipy.io.loadmat('20111024x3_EEG_ATM.mat')
@@ -40,7 +42,9 @@ for x in range(0, 5): #last two samples are EOG and ECG
 	ax1.plot(column)
 	ax2 = fig.add_subplot(3,1,2)
 	Pxx, freqs, bins, im = ax2.specgram(column, NFFT=NFFT, Fs=Fs, noverlap=noverlap)
+
 	spec_shape = Pxx.shape
+	'''
 	print spec_shape
 	for i in xrange(0, spec_shape[1]):
 		feature =Pxx[:200,i]
@@ -48,14 +52,15 @@ for x in range(0, 5): #last two samples are EOG and ECG
 		# rotated_feature = zip(*feature)[::-1]
 		# print len(rotated_feature)
 		features_array[i,x*200:(x+1)*200] = feature
-
+'''
 	# print ("######")
 	# print (Pxx.shape)
 	# print (Pxx[0].shape)
 	ax3 =fig.add_subplot(3,1,3)
 	ax3.plot(y)
+	obs_spec.spectrogram(column, samp_rate=500, per_lap=0.9, wlen=500, cmap = matplotlib.colors.Colormap("name", N=256))
 	print ("######")
-
+'''
 print features_array.shape
 # print features_array
 
@@ -69,5 +74,5 @@ y_hat = clf.predict(features_array[:200, :])
 
 error = np.sqrt(pow((y_hat - y),2) / (200))
 # print error
-
-pylab.show()
+'''
+# pylab.show()
