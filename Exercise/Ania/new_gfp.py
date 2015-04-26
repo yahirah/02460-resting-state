@@ -15,21 +15,12 @@ def open_file(path):
     data = loadmat(path, squeeze_me=False)
     data = data['EEGdata']
     idx = data['R128'].flatten()[0].flatten()
-    eeg = data['data'][0][0][(idx[0]+1500):]
+    eeg = data['filtered_data'][0][0][(idx[0]+1500):]
 
-    no_electrodes = eeg.shape[1] - 2 
+    no_electrodes = eeg.shape[1] # - 2 
     print "No of electrodes: " + str(no_electrodes)
     print "Shape of eeg array: " + str(eeg.shape)
     return eeg, no_electrodes
-
-def absolute_values(data):
-    min_eeg = np.min(data)
-    print "Minimal eeg: " + str(min_eeg)
-    if min_eeg < 0:
-        result = data - min_eeg
-    else:
-        result = data + min_eeg
-    return result
 
 # generate GFP vector
 def generate_gfp(data):
@@ -39,7 +30,7 @@ def generate_gfp(data):
 
 # find peaks in GFP
 def find_peaks(data):
-    peaks = signal.find_peaks_cwt(gfp, np.arange(20,50))
+    peaks = signal.find_peaks_cwt(gfp, np.arange(5,10))
     print "Number of peaks: " + str(len(peaks))
     return peaks
 
@@ -52,10 +43,29 @@ def generate_microstates(peeks, data, no_electrodes):
     print "Shape of microstates: " + str(microstates.shape)
     return microstates
 
+def concatenate(main, append):
+    print "Shape of main:" + str(main.shape)
+    print "Shape of append" + str(append.shape)
 
-path = "20111024x3_EEG_ATM.mat"
-data, no_electrodes = open_file(path)
-eeg = absolute_values(data)
-gfp = generate_gfp(eeg)
-peaks = find_peaks(gfp)
-microstates = generate_microstates(peaks, eeg, no_electrodes)
+    result = np.append(main, append, axis=0)
+    return result
+
+gen_path = "E:\Dropbox\EEG_data\\filtered"
+paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt", "20110912x4_EEG_ATM_filt",
+         "20110926x3_EEG_ATM_filt", "20111024x3_EEG_ATM_filt", "20111121x5_EEG_ATM_filt",
+         "20111205x6_EEG_ATM_filt", "20120130x5_EEG_ATM_filt", "20120213x5_EEG_ATM_filt",
+         "20120312x6_EEG_ATM_filt", "20130819x2_EEG_ATM_filt", "20130826x1_EEG_ATM_filt",
+         "20130903x1_EEG_ATM_filt", "20130908x1_EEG_ATM_filt", "20130908x2_EEG_ATM_filt",
+         "20130908x3_EEG_ATM_filt", "20131114x1_EEG_ATM_filt", "20131114x2_EEG_ATM_filt"]
+
+np.savetxt("result.in", [[1, 2, 3], [4,5,6]])
+result = np.zeros((1,30))
+for path in paths:
+    print "*** Path no " + str(paths.index(path)) + " of " + str(len(paths))
+    p = gen_path + "\\" + path;
+    eeg, no_electrodes = open_file(p)
+    gfp = generate_gfp(eeg)
+    peaks = find_peaks(gfp)
+    microstates = generate_microstates(peaks, eeg, no_electrodes)
+    result = concatenate(result, microstates);
+np.savetxt("result.txt", result)

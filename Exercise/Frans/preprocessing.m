@@ -7,9 +7,9 @@ eeg = EEGdata.data(:,1:30);
 eog = EEGdata.data(:,31);
 ecg = EEGdata.data(:,32);
 idx = EEGdata.R128; % every 1500 corresponds to fmri
-eeg_less = eeg(idx,:);
+eeg_less = eeg(idx(1)+1500:end,:);
 start = idx(1)+1500; % number of sample where t= 3s after first fmri
-plot(eeg(start:end,1))
+plot(eeg_less(start:end,1))
 
 [N,M] = size(eeg);
 
