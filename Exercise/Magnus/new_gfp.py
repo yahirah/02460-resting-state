@@ -41,7 +41,7 @@ def generate_gfp(data):
 
 # find peaks in GFP
 def find_peaks(data):
-    peaks = signal.find_peaks_cwt(gfp, np.arange(1,5))
+    peaks = signal.find_peaks_cwt(gfp, np.arange(1,20), noise_perc=50)
     print "Number of peaks: " + str(len(peaks))
     return peaks
 
@@ -61,7 +61,7 @@ def concatenate(main, append):
     result = np.append(main, append, axis=0)
     return result
 
-gen_path = "E:\Dropbox\EEG_data\\filtered"
+gen_path = "D:\Dropbox\EEG_data\\filtered"
 paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt", "20110912x4_EEG_ATM_filt",
          "20110926x3_EEG_ATM_filt", "20111024x3_EEG_ATM_filt", "20111121x5_EEG_ATM_filt",
          "20111205x6_EEG_ATM_filt", "20120130x5_EEG_ATM_filt", "20120213x5_EEG_ATM_filt",
@@ -72,6 +72,7 @@ paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt", "20110912x4_EEG_A
 np.savetxt("result.in", [[1, 2, 3], [4,5,6]])
 result = np.zeros((1,30))
 res_eeg = np.zeros((1,30))
+res_peaks = np.zeros((30, 1))
 for path in paths:
     print "*** Path no " + str(paths.index(path) + 1) + " of " + str(len(paths))
     p = gen_path + "\\" + path;
@@ -79,8 +80,10 @@ for path in paths:
     eeg = standarize(eeg)
     gfp = generate_gfp(eeg)
     peaks = find_peaks(gfp)
-    microstates = generate_microstates(peaks, eeg, no_electrodes)
+    microstates = eeg[peaks, :]
     result = concatenate(result, microstates)
     res_eeg = concatenate(res_eeg, eeg)
+    res_peaks[i] = append(res_peaks, peaks);
 np.savetxt("result.txt", result)
 np.savetxt("eeg_standarized.txt", res_eeg)
+np.savetxt("peaks.txt", peaks)
