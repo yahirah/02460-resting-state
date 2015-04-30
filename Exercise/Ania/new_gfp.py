@@ -22,6 +22,17 @@ def open_file(path):
     print "Shape of eeg array: " + str(eeg.shape)
     return eeg, no_electrodes
 
+
+
+def standarize(data):
+    for i in range(1, data.shape[1]):
+        row = data[:, i]
+        mean = np.mean(row)
+        std = np.std(row)
+        data[:, i] = (row - mean)/std
+        # print "Variance: " + str(np.var(data[:, i])) + ", mean: " + str(np.mean(data[:,i]))
+    return data;
+
 # generate GFP vector
 def generate_gfp(data):
     gfp = np.std(eeg, axis=1)
@@ -30,7 +41,7 @@ def generate_gfp(data):
 
 # find peaks in GFP
 def find_peaks(data):
-    peaks = signal.find_peaks_cwt(gfp, np.arange(5,10))
+    peaks = signal.find_peaks_cwt(gfp, np.arange(1,5))
     print "Number of peaks: " + str(len(peaks))
     return peaks
 
@@ -60,12 +71,16 @@ paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt", "20110912x4_EEG_A
 
 np.savetxt("result.in", [[1, 2, 3], [4,5,6]])
 result = np.zeros((1,30))
+res_eeg = np.zeros((1,30))
 for path in paths:
-    print "*** Path no " + str(paths.index(path)) + " of " + str(len(paths))
+    print "*** Path no " + str(paths.index(path) + 1) + " of " + str(len(paths))
     p = gen_path + "\\" + path;
     eeg, no_electrodes = open_file(p)
+    eeg = standarize(eeg)
     gfp = generate_gfp(eeg)
     peaks = find_peaks(gfp)
     microstates = generate_microstates(peaks, eeg, no_electrodes)
-    result = concatenate(result, microstates);
+    result = concatenate(result, microstates)
+    res_eeg = concatenate(res_eeg, eeg)
 np.savetxt("result.txt", result)
+np.savetxt("eeg_standarized.txt", res_eeg)
