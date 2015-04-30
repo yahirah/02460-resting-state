@@ -80,7 +80,7 @@ for path in paths:
     eeg = standarize(eeg)
     gfp = generate_gfp(eeg)
     peaks = find_peaks(gfp)
-    microstates = generate_microstates(peaks, eeg, no_electrodes)
+    microstates = eeg(peaks, :)
     result = concatenate(result, microstates)
     res_eeg = concatenate(res_eeg, eeg)
     res_peaks[i] = append(res_peaks, peaks);
