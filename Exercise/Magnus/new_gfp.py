@@ -83,7 +83,7 @@ for path in paths:
     microstates = eeg[peaks, :]
     result = concatenate(result, microstates)
     res_eeg = concatenate(res_eeg, eeg)
-    res_peaks[i] = append(res_peaks, peaks);
+    res_peaks[i] = np.append(res_peaks, peaks);
 np.savetxt("result.txt", result)
 np.savetxt("eeg_standarized.txt", res_eeg)
 np.savetxt("peaks.txt", peaks)
