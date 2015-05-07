@@ -35,10 +35,14 @@ a=EEGdata.data;
 %% Reception of GFP EEG data is presumed here. All concatenated
 close all
 clc
-M = dlmread('result_normalized.txt', ' '); % result.txt from python (Anna)
+XGFP = dlmread('result_normalized.txt', ' '); % result_normalized.txt from python
 EEG_GFP = M(2:end, :)'; % first one is zero ;)
 size(EEG_GFP)
-% dim(EEG) = (Channels,time) = X
+
+eeg_standarized= dlmread('eeg_standarized.txt', ' '); % eeg_standarized from python
+Xstd = eeg_standarized(2:end, :)'; % first one is zero ;)
+
+% dim(EEG) = (Channels,time)
 
 %% Apply ICA to decompose these microstates received above into several sources
 % Single group ICA analysis using the EEGLAB toolbox
@@ -85,12 +89,13 @@ EEG.chanlocs = chanlocs(:,1:30); % run this line and the channels will appear in
 
 % A = EEG.icaweights % From EEGLAB
 % inv(A) = EEG.icawinv % From EEGLAB
-S = EEG.icawinv * EEG_GFP;
-figure(3)
-plot(S)
+S = EEG.icawinv * Xstd; % assume this is correct
+[V,I] = max(abs(S),[],1); % labeled the microstates based upon their intensity values and then neutralized their absolute values. 0/1
+% I = index of max (column)
+
 
 figure(4)
-plot(S(2,:)) % when is component 2 active
+plot(I(30001:30100)) % activity component 2
 
 %% Find A from EEGLAB
 % http://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA
