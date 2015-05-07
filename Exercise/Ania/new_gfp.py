@@ -6,6 +6,7 @@ from scipy.io import loadmat
 from sklearn.decomposition import FastICA
 from sklearn import preprocessing
 import string
+import pickle
 import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
 
@@ -33,6 +34,9 @@ def standarize(data):
         # print "Variance: " + str(np.var(data[:, i])) + ", mean: " + str(np.mean(data[:,i]))
     return data;
 
+def downsample(data):
+    return data[0:data.shape[0]:2, :]
+
 # generate GFP vector
 def generate_gfp(data):
     gfp = np.std(eeg, axis=1)
@@ -41,7 +45,7 @@ def generate_gfp(data):
 
 # find peaks in GFP
 def find_peaks(data):
-    peaks = signal.find_peaks_cwt(gfp, np.arange(1,20), noise_perc=50)
+    peaks = signal.find_peaks_cwt(gfp, np.arange(1,15), noise_perc=50)
     print "Number of peaks: " + str(len(peaks))
     return peaks
 
@@ -61,29 +65,35 @@ def concatenate(main, append):
     result = np.append(main, append, axis=0)
     return result
 
+def save_dict(name, obj):
+    with open(name,'w') as f:
+        for path in paths:
+            line = ' '.join(str(e) for e in obj[path])
+            f.write(line+'\n') # python will convert \n to os.linesep
+    f.close()
 gen_path = "E:\Dropbox\EEG_data\\filtered"
-paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt", "20110912x4_EEG_ATM_filt",
-         "20110926x3_EEG_ATM_filt", "20111024x3_EEG_ATM_filt", "20111121x5_EEG_ATM_filt",
+paths = ["20110822x4_EEG_ATM_filt", "20110823x1_EEG_ATM_filt"] #, "20110912x4_EEG_ATM_filt",
+''' "20110926x3_EEG_ATM_filt", "20111024x3_EEG_ATM_filt", "20111121x5_EEG_ATM_filt",
          "20111205x6_EEG_ATM_filt", "20120130x5_EEG_ATM_filt", "20120213x5_EEG_ATM_filt",
          "20120312x6_EEG_ATM_filt", "20130819x2_EEG_ATM_filt", "20130826x1_EEG_ATM_filt",
          "20130903x1_EEG_ATM_filt", "20130908x1_EEG_ATM_filt", "20130908x2_EEG_ATM_filt",
          "20130908x3_EEG_ATM_filt", "20131114x1_EEG_ATM_filt", "20131114x2_EEG_ATM_filt"]
-
-np.savetxt("result.in", [[1, 2, 3], [4,5,6]])
-result = np.zeros((1,30))
-res_eeg = np.zeros((1,30))
-res_peaks = np.zeros((30, 1))
+'''
+result = np.zeros((0,30))
+res_eeg = np.zeros((0,30))
+res_peaks = { path : np.zeros((0,0)) for path in paths}
 for path in paths:
     print "*** Path no " + str(paths.index(path) + 1) + " of " + str(len(paths))
     p = gen_path + "\\" + path;
     eeg, no_electrodes = open_file(p)
+    eeg = downsample(eeg)
     eeg = standarize(eeg)
     gfp = generate_gfp(eeg)
     peaks = find_peaks(gfp)
     microstates = eeg[peaks, :]
     result = concatenate(result, microstates)
     res_eeg = concatenate(res_eeg, eeg)
-    res_peaks[i] = np.append(res_peaks, peaks);
-np.savetxt("result.txt", result)
+    res_peaks[path] =  peaks;
+np.savetxt("microstates.txt", result)
 np.savetxt("eeg_standarized.txt", res_eeg)
-np.savetxt("peaks.txt", peaks)
+save_dict("peaks.txt", res_peaks)
