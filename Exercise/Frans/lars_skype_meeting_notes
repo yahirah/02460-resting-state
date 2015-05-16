@@ -1,0 +1,12 @@
+permutation test
+experiments:
+    length of microstate intervals as a function of (n of preICA microstates), measure: median of distribution
+    similarity of microstates as a function of (n of preICA microstates) (similarity: match up microstates by how much variance they explain)
+    similarity of microstates as a function of different ICA approximation functions
+
+eeg: mixture of signals with different kurtosis
+
+exam:
+have questions with answers prepared.
+have notes with additional figures
+send a copy of the poster to Lars monday afternoon
