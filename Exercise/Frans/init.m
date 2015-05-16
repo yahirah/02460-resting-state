@@ -54,6 +54,8 @@ for subject=1:size(eeg,3)
 end
 
 gfp = std(eegfold,0,2);
+figure()
+plot(gfp)
 [~, locs] = findpeaks(gfp,'MinPeakDist',50);
     % findpeaks(gfp(1:1500)),'MinPeakWidth',3,'MaxPeakWidth',60);
 microstates = eegfold(locs,:)';
@@ -75,7 +77,9 @@ end
 
 Asorted = A(:,order1);
 %%
-As = zeros(30,30,5);
+nICs = 30;
+As = zeros(30,nICs,5);
+vars = zeros(nICs,5);
 for fold=1:5
     tmp = 1:5;
     tmp(fold) = [];
@@ -86,22 +90,35 @@ for fold=1:5
     gfp = std(eegfold,0,2);
     [~, locs] = findpeaks(gfp,'MinPeakDist',50);
     microstates = eegfold(locs,:)';
-    [icasig, A, W] = fastica(microstates); % using cubic polynomial
+    [icasig, A, W] = fastica(microstates,'numOfIC',nICs); % using cubic polynomial
     S = W*eegfold'; % apply seperation matrix to original data
-    variance_of_component = zeros(30,1);
-    for i=1:30
+    variance_of_component = zeros(nICs,1);
+    for i=1:nICs
         back_proj = (A(:,i)*S(i,:))';
         variance_of_component(i) = 1 - var(eegfold(:) - back_proj(:))/var(eegfold(:));
     end
-    [~, order1] = sort(variance_of_component);
-    As(:,:,fold) = A(:,order1);
+    [~, order] = sort(variance_of_component);
+    As(:,:,fold) = A(:,order);
+    vars(:,fold) = variance_of_component(order);
 end
 %%
+dims = factor(nICs);
+if size(dims,2)==3
+    nrow = dims(1)*dims(2);
+    ncol = dims(3);
+elseif size(dims,2)==2
+    nrow = dims(1);
+    ncol = dims(2);
+else
+    nrow = 1;
+    ncol = dims(1);
+end
 for j=1:5
     figure()
-    for i=1:30
-        subplot(5,6,i)
+    for i=1:nICs
+        subplot(nrow,ncol,(nICs+1)-i)
         topoplot(As(:,i,j),chanlocs,'electrodes','off','style','map');%,'plotchans',chanlocs(1:30).labels);
+        title(num2str(vars(i,j)))
     end
 end
 %% try kmeans
