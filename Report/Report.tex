@@ -10,19 +10,14 @@
 \toappear{02460 Advanced Machine Learning, DTU Compute, Spring 2015}
 
 
-% Example definitions.
-% --------------------
 \def\x{{\mathbf x}}
 \def\L{{\cal L}}
 
-% Title.
-% ------
-\title{AUTHOR GUIDELINES FOR ICASSP 2011 PROCEEDINGS MANUSCRIPTS}
-%
-% Single address.
-% ---------------
-\name{Author(s) Name(s)\thanks{Thanks to XYZ agency for funding.}}
-\address{Author Affiliation(s)}
+\title{Relating EEG microstates to the Default Mode Network}
+\name{Magnus Alexander Bitsch (s103243), 
+Franciszek Olaf Zdyb (s093086),
+Anna Maria Walach (s121540) }
+\address{Technical University Of Denmark}
 %
 % For example:
 % ------------
@@ -60,100 +55,58 @@ in black ink.
 \end{abstract}
 %
 \begin{keywords}
-One, two, three, four, five
+machine learning, EEG, fMRI, microstates, Default Mode Network
 \end{keywords}
 %
 \section{Introduction}
 \label{sec:intro}
+\subsection{Microstates}
+Microstates are unique topographic distributions of the electrical field 
+potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable 
+(\~100 ms). They are derived from EEG signal using either temporal clustering 
+or temporal ICA. Microstate analysis has been used for assessing the function of large-scale brain networks.
 
-These guidelines include complete descriptions of the fonts, spacing, and
-related information for producing your proceedings manuscripts. Please follow
-them and if you have any questions, direct them to Conference Management
-Services, Inc.: Phone +1-979-846-6800 or Fax +1-832-426-7760 or email
-to icassp2011@securecms.com.
+\subsection{Default Mode Network}
+Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). Default Mode Network (DMN) is one of the most researched RSNs. It is becoming active when one mind is "wandering". Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
+\subsection{Motivation}
+\label{sec:motivation}
+Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. This research aims to find a correlation between microstates derived from EEG data and DMN from fMRI. This may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
-\section{Formatting your paper}
-\label{sec:format}
+\subsection{Problem}
 
-All printed material, including text, illustrations, and charts, must be kept
-within a print area of 7 inches (178 mm) wide by 9 inches (229 mm) high. Do
-not write or print anything outside the print area. The top margin must be 1
-inch (25 mm), except for the title page, and the left margin must be 0.75 inch
-(19 mm).  All {\it text} must be in a two-column format. Columns are to be 3.39
-inches (86 mm) wide, with a 0.24 inch (6 mm) space between them. Text must be
-fully justified.
 
-\section{PAGE TITLE SECTION}
-\label{sec:pagestyle}
+\section{Data}
+\label{sec:data}
+The EEG data contains 10 minutes probes from 20 subjects, recorded in free different settings: in atmospheric, increased $CO_2$ and increased $O_2$ conditions. The data was recorded in Glostrup Hospital by Egill Rostrup and Ulrich Lindberg as a simultaneous EEG/fMRI. The recording included 30 electrodes for brain activity measurement, one for eye movement and one for heartbeat. The sampling frequency was 500 Hz. The moment of launching the fMRI is recorded for each sample, so the data can be trimmed appropriately.
+\subsection{Artefact removal}
+Initial cleaning of the data, especially removing the fMRI artefacts, has been performed 
+by Glostrup Hospital staff,  followed by further artefact removal performed by Andreas Trier Poulsen. This process included notch- and low-pass filtering, as well as using ECG and EOG to get rid of eye blinks and heart beat artefacts. 
+The data from only 5 subjects (in all conditions) remained.
 
-The paper title (on the first page) should begin 1.38 inches (35 mm) from the
-top edge of the page, centered, completely capitalized, and in Times 14-point,
-boldface type.  The authors' name(s) and affiliation(s) appear below the title
-in capital and lower case letters.  Papers with multiple authors and
-affiliations may require two or more lines for this information.
+\section{Methods for generating microstates}
+% Given artifact-free EEG data from five subjects, we generated 30 microstates using temporal ICA (fig.2).
+\subsection{GFP}
+Following Yuan et al., we calculated the global field power time course (GFP), and found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected for highest correlation with the fMRI data via a grid search.
+\subsection{FastICA}
+We concatenated the topographies across subjects, and run ICA. Our algorithm of choice was FastICA \cite{fast_robust} with the cubic non-linearity function. The resulting separation matrix was applied to the continuous EEG to obtain time courses of the microstates.
+\subsection{Hemodynamic response function}   
+We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}. 
+\\ \\
+In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We calculated the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
+\section{Finding relation between microstates and DMN}
+\subsection{Independent Components from fMRI}
+\subsection{Elastic net}
+\subsection{Cross-validation}
 
-\section{TYPE-STYLE AND FONTS}
-\label{sec:typestyle}
 
-To achieve the best rendering both in the proceedings and from the CD-ROM, we
-strongly encourage you to use Times-Roman font.  In addition, this will give
-the proceedings a more uniform look.  Use a font that is no smaller than nine
-point type throughout the paper, including figure captions.
 
-In nine point type font, capital letters are 2 mm high.  {\bf If you use the
-smallest point size, there should be no more than 3.2 lines/cm (8 lines/inch)
-vertically.}  This is a minimum spacing; 2.75 lines/cm (7 lines/inch) will make
-the paper much more readable.  Larger type sizes require correspondingly larger
-vertical spacing.  Please do not double-space your paper.  True-Type 1 fonts
-are preferred.
-
-The first paragraph in each section should not be indented, but all the
-following paragraphs within the section should be indented as these paragraphs
-demonstrate.
-
-\section{MAJOR HEADINGS}
-\label{sec:majhead}
-
-Major headings, for example, "1. Introduction", should appear in all capital
-letters, bold face if possible, centered in the column, with one blank line
-before, and one blank line after. Use a period (".") after the heading number,
-not a colon.
-
-\subsection{Subheadings}
-\label{ssec:subhead}
-
-Subheadings should appear in lower case (initial word capitalized) in
-boldface.  They should start at the left margin on a separate line.
-
-\subsubsection{Sub-subheadings}
-\label{sssec:subsubhead}
-
-Sub-subheadings, as in this paragraph, are discouraged. However, if you
-must use them, they should appear in lower case (initial word
-capitalized) and start at the left margin on a separate line, with paragraph
-text beginning on the following line.  They should be in italics.
-
-\section{PRINTING YOUR PAPER}
-\label{sec:print}
-
-Print your properly formatted text on high-quality, 8.5 x 11-inch white printer
-paper. A4 paper is also acceptable, but please leave the extra 0.5 inch (12 mm)
-empty at the BOTTOM of the page and follow the top and left margins as
-specified.  If the last page of your paper is only partially filled, arrange
-the columns so that they are evenly balanced if possible, rather than having
-one long column.
-
-In LaTeX, to start a new column (but not a new page) and help balance the
-last-page column lengths, you can use the command ``$\backslash$pagebreak'' as
-demonstrated on this page (see the LaTeX source below).
-
-\section{PAGE NUMBERING}
-\label{sec:page}
-
-Please do {\bf not} paginate your paper.  Page numbers, session numbers, and
-conference identification will be inserted when the paper is included in the
-proceedings.
-
+\section{Experiments}
+\subsection{Adjusting pick sizes}
+We performed 5-fold cross-validation with λ log-spaced in the interval 
+[ $10^{-4}$ - $10^2$] by randomly dividing the data into the 5 folds to adjust of the fact that the behaviour of a subject might 'change' over time in the scanner 
+e.g. fall asleep. Since we did not have an independent test set, we couldn't assess the generalization error. Instead, we estimated the error on the validation set.
+\section{Results}
+\section{Discussion}
 \section{ILLUSTRATIONS, GRAPHS, AND PHOTOGRAPHS}
 \label{sec:illust}
 
@@ -206,35 +159,8 @@ this \cite{Lamp86}.
 \vfill
 \pagebreak
 
-
-\section{FOOTNOTES}
-\label{sec:foot}
-
-Use footnotes sparingly (or not at all!) and place them at the bottom of the
-column on the page on which they are referenced. Use Times 9-point type,
-single-spaced. To help your readers, avoid using footnotes altogether and
-include necessary peripheral observations in the text (within parentheses, if
-you prefer, as in this sentence).
-
-
-\section{COPYRIGHT FORMS}
-\label{sec:copyright}
-
-You must include your fully completed, signed IEEE copyright release form when
-you submit your paper. We {\bf must} have this form before your paper can be
-published in the proceedings.  The copyright form is available as a Word file,
-a PDF file, and an HTML file. You can also use the form sent with your author
-kit.
-
-\section{REFERENCES}
-\label{sec:ref}
-
-List and number all bibliographical references at the end of the paper.  The references can be numbered in alphabetic order or in order of appearance in the document.  When referring to them in the text, type the corresponding reference number in square brackets as shown at the end of this sentence \cite{C2}.
-
-% References should be produced using the bibtex program from suitable
-% BiBTeX files (here: strings, refs, manuals). The IEEEbib.bst bibliography
-% style file from IEEE produces unsorted bibliography list.
-% -------------------------------------------------------------------------
+\section{Conclusions}
+\section{Acknowledgements}
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
 
