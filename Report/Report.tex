@@ -18,26 +18,7 @@
 Franciszek Olaf Zdyb (s093086),
 Anna Maria Walach (s121540) }
 \address{Technical University Of Denmark}
-%
-% For example:
-% ------------
-%\address{School\\
-%	Department\\
-%	Address}
-%
-% Two addresses (uncomment and modify for two-address case).
-% ----------------------------------------------------------
-%\twoauthors
-%  {A. Author-one, B. Author-two\sthanks{Thanks to XYZ agency for funding.}}
-%	{School A-B\\
-%	Department A-B\\
-%	Address A-B}
-%  {C. Author-three, D. Author-four\sthanks{The fourth author performed the work
-%	while at ...}}
-%	{School C-D\\
-%	Department C-D\\
-%	Address C-D}
-%
+
 \begin{document}
 %\ninept
 %
@@ -45,13 +26,7 @@ Anna Maria Walach (s121540) }
 \maketitle
 %
 \begin{abstract}
-The abstract should appear at the top of the left-hand column of text, about
-0.5 inch (12 mm) below the title area and no more than 3.125 inches (80 mm) in
-length.  Leave a 0.5 inch (12 mm) space between the end of the abstract and the
-beginning of the main text.  The abstract should contain about 100 to 150
-words, and should be identical to the abstract text submitted electronically
-along with the paper cover sheet.  All manuscripts must be in English, printed
-in black ink.
+
 \end{abstract}
 %
 \begin{keywords}
@@ -59,41 +34,44 @@ machine learning, EEG, fMRI, microstates, Default Mode Network
 \end{keywords}
 %
 \section{Introduction}
-\label{sec:intro}
+The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from fMRI, using methods described in \cite{Yuan20122062}.
+
+Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If correlation between EEG and DMN from fMRI can be found, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
+
 \subsection{Microstates}
-Microstates are unique topographic distributions of the electrical field 
-potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable 
-(\~100 ms). They are derived from EEG signal using either temporal clustering 
-or temporal ICA. Microstate analysis has been used for assessing the function of large-scale brain networks.
+Microstates are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable (\~100 ms). They are derived from EEG signal using either temporal clustering or temporal ICA. Microstate analysis has been used for assessing the function of large-scale brain networks.
 
 \subsection{Default Mode Network}
 Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). Default Mode Network (DMN) is one of the most researched RSNs. It is becoming active when one mind is "wandering". Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
-\subsection{Motivation}
-\label{sec:motivation}
-Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. This research aims to find a correlation between microstates derived from EEG data and DMN from fMRI. This may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
-\subsection{Problem}
-
+\subsection{Research topic}
+The topic of this article consists of few subproblems: 
+\begin{itemize}
+\item \textbf{artefact removal} - simultaneous recording of EEG and fMRI is causing a lot of noises in EEG signal. EEG is also very sensitive to heartbeat and eye and body movements. Removing artefacts is important part of feature engineering. 
+\item \textbf{retrieving microstates} - different methods can be used to retrieve microstates from EEG \cite{Khanna2015105}. Establishing proper pipeline for retrieving microstates allows them to be robust and valuable features. 
+\item \textbf{finding correlation} - once we obtain a features from EEG and values from fMRI, there are various tools that can be used to find correlation. Choosing a right one allows for finding hopefully high correlation with low bias. 
+\end{itemize}
+\subsection{Current status in literature}
 
 \section{Data}
 \label{sec:data}
-The EEG data contains 10 minutes probes from 20 subjects, recorded in free different settings: in atmospheric, increased $CO_2$ and increased $O_2$ conditions. The data was recorded in Glostrup Hospital by Egill Rostrup and Ulrich Lindberg as a simultaneous EEG/fMRI. The recording included 30 electrodes for brain activity measurement, one for eye movement and one for heartbeat. The sampling frequency was 500 Hz. The moment of launching the fMRI is recorded for each sample, so the data can be trimmed appropriately.
+The EEG and fMRI data were recorded simultaneously. 
+
+The data contains 10 minutes probes from 20 subjects, recorded in free different settings: in atmospheric, increased $CO_2$ and increased $O_2$ conditions. It was recorded in Glostrup Hospital by Egill Rostrup and Ulrich Lindberg as a simultaneous EEG/fMRI. The recording included 30 electrodes for brain activity measurement, one for eye movement and one for heartbeat. The sampling frequency was 500 Hz. The time stamp of launching the fMRI is recorded for each sample, so the data can be trimmed appropriately.
 \subsection{Artefact removal}
-Initial cleaning of the data, especially removing the fMRI artefacts, has been performed 
-by Glostrup Hospital staff,  followed by further artefact removal performed by Andreas Trier Poulsen. This process included notch- and low-pass filtering, as well as using ECG and EOG to get rid of eye blinks and heart beat artefacts. 
+Initial cleaning of the data, especially removing the fMRI artefacts, has been performed by Glostrup Hospital staff, followed by further artefact removal performed by Andreas Trier Poulsen. This process included notch- and low-pass filtering, as well as using ECG and EOG to get rid of eye blinks and heart beat artefacts. 
 The data from only 5 subjects (in all conditions) remained.
 
-\section{Methods for generating microstates}
-Given artifact-free EEG data from five subjects, we generated 30 microstates using temporal ICA.
-\subsection{GFP}
-Following Yuan et al., we calculated the global field power time course (GFP), and found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected for highest correlation with the fMRI data via a grid search.
-\subsection{FastICA}
-We concatenated the topographies across subjects, and run ICA. Our algorithm of choice was FastICA \cite{fast_robust} with the cubic non-linearity function. The resulting separation matrix was applied to the continuous EEG to obtain time courses of the microstates.
+\section{Generating microstates}
+The input data for this process is artefact-free data from five subjects in all conditions, from 30 electrodes. At the end, we have 30 microstates, from which some will be chosen as regressors in correlation task. 
+\subsection{Global Field Power}
+Following Yuan et al., we calculated the Global Field Power time course (GFP), which is a standard deviation across electrodes. Then we found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected for highest correlation with the fMRI data via a grid search.
+\subsection{Independent Component Analysis}
+We concatenated the topographies from peaks across subjects, and run ICA. Our algorithm of choice was FastICA \cite{fast_robust} with the cubic non-linearity function. The resulting separation matrix was applied to the continuous EEG to obtain time courses of the microstates.
 \subsection{Hemodynamic response function}   
 We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}. 
-\\ \\
-In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We calculated the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
-\section{Finding relation between microstates and DMN}
+
+\section{Correlation of microstates and DMN}
 \subsection{Independent Components from fMRI}
 \subsection{Elastic net}
 \subsection{Cross-validation}
@@ -101,6 +79,7 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 
 
 \section{Experiments}
+In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We calculated the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
 \subsection{Adjusting peak sizes}
 We performed 5-fold cross-validation with λ log-spaced in the interval 
 [ $10^{-4}$ - $10^2$] by randomly dividing the data into the 5 folds to adjust of the fact that the behaviour of a subject might 'change' over time in the scanner 
