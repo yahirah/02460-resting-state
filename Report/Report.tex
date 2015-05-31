@@ -84,7 +84,7 @@ by Glostrup Hospital staff,  followed by further artefact removal performed by A
 The data from only 5 subjects (in all conditions) remained.
 
 \section{Methods for generating microstates}
-% Given artifact-free EEG data from five subjects, we generated 30 microstates using temporal ICA (fig.2).
+Given artifact-free EEG data from five subjects, we generated 30 microstates using temporal ICA.
 \subsection{GFP}
 Following Yuan et al., we calculated the global field power time course (GFP), and found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected for highest correlation with the fMRI data via a grid search.
 \subsection{FastICA}
@@ -101,12 +101,15 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 
 
 \section{Experiments}
-\subsection{Adjusting pick sizes}
+\subsection{Adjusting peak sizes}
 We performed 5-fold cross-validation with λ log-spaced in the interval 
 [ $10^{-4}$ - $10^2$] by randomly dividing the data into the 5 folds to adjust of the fact that the behaviour of a subject might 'change' over time in the scanner 
 e.g. fall asleep. Since we did not have an independent test set, we couldn't assess the generalization error. Instead, we estimated the error on the validation set.
 \section{Results}
 \section{Discussion}
+%discuss comparison with Yuan article
+
+\if false
 \section{ILLUSTRATIONS, GRAPHS, AND PHOTOGRAPHS}
 \label{sec:illust}
 
@@ -158,7 +161,7 @@ this \cite{Lamp86}.
 % -------------------------------------------------------------------------
 \vfill
 \pagebreak
-
+\fi
 \section{Conclusions}
 \section{Acknowledgements}
 \bibliographystyle{IEEEbib}
