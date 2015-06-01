@@ -1,11 +1,5 @@
-% Template for ICASSP-2010 paper; to be used with:
-%          mlspconf.sty  - ICASSP/ICIP LaTeX style file adapted for MLSP, and
-%          IEEEbib.bst - IEEE bibliography style file.
-% --------------------------------------------------------------------------
 \documentclass{article}
 \usepackage{amsmath,graphicx,02460}
-
-
 
 \toappear{02460 Advanced Machine Learning, DTU Compute, Spring 2015}
 
@@ -26,17 +20,23 @@ Anna Maria Walach (s121540) }
 \maketitle
 %
 \begin{abstract}
+Different studies using functional magnetic resonance imaging (fMRI) of the blood-oxygenation-level dependent (BOLD) signal have shown the resting brain activity is associated with slowly fluctuating hemodynamic signals (~10 s). More recently, multimodal functional imaging studies involving simultaneous acquisition of BOLD-fMRI and electroencephalography (EEG) data have suggested
+that the relatively slow hemodynamic fluctuations of some resting state networks (RSNs) evinced in the BOLD data are related to much faster (~100 ms) transient brain states reflected in EEG signals, that are referred to as “microstates” \cite{Yuan20122062}.
+
+In this project we replicated the research methods described in \cite{Yuan20122062}, i.e. we generated microstates from EEG based on their temporal, not spatial similarity. We enriched the approach with different correlation mechanism and experiments aiming to improve robustness and correlation of microstates.
+
+Our results %TODO
 
 \end{abstract}
 %
 \begin{keywords}
-machine learning, EEG, fMRI, microstates, Default Mode Network
+machine learning, EEG, BOLD fMRI, microstates, Default Mode Network
 \end{keywords}
 %
 \section{Introduction}
-The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from fMRI, using methods described in \cite{Yuan20122062}.
+The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from BOLD fMRI, using methods described in \cite{Yuan20122062}.
 
-Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If correlation between EEG and DMN from fMRI can be found, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
+Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If correlation between EEG and DMN from BOLD fMRI can be found, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
 \subsection{Microstates}
 Microstates are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable (\~100 ms). They are derived from EEG signal using either temporal clustering or temporal ICA. Microstate analysis has been used for assessing the function of large-scale brain networks.
@@ -52,7 +52,12 @@ The topic of this article consists of few subproblems:
 \item \textbf{finding correlation} - once we obtain a features from EEG and values from fMRI, there are various tools that can be used to find correlation. Choosing a right one allows for finding hopefully high correlation with low bias. 
 \end{itemize}
 \subsection{Current status in literature}
-%TODO 
+Although microstates analysis gathered more attention just recently, it was first described in \cite{lehmann1980reference}. This study showed that microstates are similar across subjects. It used method called \emph{adaptive segmentation} to derive microstates, in which the topography at chosen time stamps is compared to the one before it, and considered the start of a new microstate if the centroid locations of the positive or negative potentials change by more than a predetermined amount \cite{Khanna2015105}. Right now studies are focusing on different method called \emph{clustering analysis}, where the topographies from specific time stamps are used as an input for clustering algorithm. It groups them in set of classes based on topographic similarity \cite{Michel2009}. Recently, new method was proposed that uses independent component analysis to find microstate classes \cite{Yuan20122062}.
+
+Number of studies that tries to correlate EEG with fMRI is growing and microstate analysis is a popular tool to use in such projects. We can observe some promising results \cite{Yuan20122062}, that allows to assume the correlation is significant and can be found. 
+
+
+
 \section{Data}
 \label{sec:data}
 The EEG and fMRI data were recorded simultaneously. 
@@ -79,7 +84,7 @@ We assumed that each subject is independent and further that microstates are com
 There are two kinds of input for algorithms in this section:
 \begin{itemize}
 \item \textbf{Microstate time series}, described in previous section 
-\item \textbf{Independent Components} from fMRI that represent the DMN. We received time series of 60 fMRI components from Glostrup Hospital. Two of them represents activity of DMN network. The sample rate is $\frac{1}{3}~Hz$. 
+\item \textbf{DMN Independent Components (DMN ICs)} from BOLD fMRI. We received time series of 60 fMRI components from Glostrup Hospital. Two of them represents activity of DMN. The sample rate is $\frac{1}{3}~Hz$. 
 \end{itemize} 
 
 \subsection{Elastic net}
