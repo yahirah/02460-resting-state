@@ -72,8 +72,13 @@ We concatenated the topographies from peaks across subjects, and run ICA. Our al
 We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}. 
 
 \section{Correlation of microstates and DMN}
-We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}.
-\subsection{Independent Components from fMRI}
+There are two kinds of input for algorithms in this section:
+\begin{itemize}
+\item \textbf{microstate time series}, described in previous section 
+\item \textbf{Independent Components} from fMRI that represent the DMN. We received time series of 60 fMRI components from Glostrup Hospital. Two of them represents activity of DMN network. The sample rate is $\frac{1}{3}~Hz$. 
+\end{itemize} 
+
+In this section, we describe proccess of finding the best subset of microstates that we can use for predicting the DMN activity and the predicting algorithms.
 \subsection{Elastic net}
 As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates (time course) that characterizes the default mode network. Performing both feature selection and variance reduction by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) \cite{hastie01} provides a framework for a model describing the relation between the EEG microstates and independent component of the BOLD fMRI DMN.
 The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
