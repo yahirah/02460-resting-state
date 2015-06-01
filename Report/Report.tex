@@ -72,15 +72,18 @@ We concatenated the topographies from peaks across subjects, and run ICA. Our al
 We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}. 
 
 \section{Correlation of microstates and DMN}
+In this section, we describe proccess of finding the best subset of microstates time course used for predicting the DMN activity and the predicting algorithms.
+
+We assumed that each subject is independent and further that microstates are common states across subjects as suggested in \cite{Yuan20122062}. This allowed us to concatenated data from different subjects and perform model selection based on a larger data set.
+
 There are two kinds of input for algorithms in this section:
 \begin{itemize}
-\item \textbf{microstate time series}, described in previous section 
+\item \textbf{Microstate time series}, described in previous section 
 \item \textbf{Independent Components} from fMRI that represent the DMN. We received time series of 60 fMRI components from Glostrup Hospital. Two of them represents activity of DMN network. The sample rate is $\frac{1}{3}~Hz$. 
 \end{itemize} 
 
-In this section, we describe proccess of finding the best subset of microstates that we can use for predicting the DMN activity and the predicting algorithms.
 \subsection{Elastic net}
-As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates (time course) that characterizes the default mode network. Performing both feature selection and variance reduction by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) \cite{hastie01} provides a framework for a model describing the relation between the EEG microstates and independent component of the BOLD fMRI DMN.
+As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and independent component of the BOLD fMRI DMN.
 The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
 \begin{equation}
 \label{eq:Elastic Net}
@@ -98,9 +101,8 @@ We chose to randomly divide the data into the 5 folds to adjust to the fact that
 
 
 
-\section{Experiments}
+%\section{Experiments}
 
-In the experiments described we assumed that each subject is independent and further that microstates are common states across subjects (DO WE HAVE A REFERENCE HERE?). This allowed us to concatenated data from different subjects and perform model selection based on a larger data set.
 \subsection{Model and peak size}
 The GFP is an sensitive measure and it is not clear whether all local peaks of the GFP should be included as input in estimating the decomposition matrix, which is later applied on the entire time course of the EEG signal. The local peaks of the GFP can be seen as 'raw' microstates. We performed a grid search altering the minimum width and height of the peaks. The width and height was linearly spaced between 0 and 100 ms, and max(GFP)/2 respectively, constraining the transient brain state (peak) to be quasi stable near 100 ms.
 It would have been ideal to use the validation error of the EN to find the optimal design settings in the peak detection. However, since it has shown to be a very hard task to predict the DMN we used the design setting in which gave the single maximum correlation of one time course of a microstate with the DMN in the EN model.
