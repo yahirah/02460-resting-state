@@ -83,7 +83,7 @@ There are two kinds of input for algorithms in this section:
 \end{itemize} 
 
 \subsection{Elastic net}
-As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and independent component of the BOLD fMRI DMN.
+As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and the DMN IC.
 The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
 \begin{equation}
 \label{eq:Elastic Net}
@@ -96,7 +96,7 @@ The elastic-net is implemented with the least angle regression (LAR) method. The
 
 
 \subsection{Cross-validation}
-Estimating the EL-penalty in (\ref{eq:Elastic Net}) we performed 5-fold cross-validation using all the artefact corrected data. However, since this is a limited amount of data we did not set a side a independent test.
+Estimating the EN-penalty in (\ref{eq:Elastic Net}) we performed 5-fold cross-validation using all the artefact corrected data of the 8 subjects. However, since this is a limited amount of data we did not set a side a independent test.
 We chose to randomly divide the data into the 5 folds to adjust to the fact that the behaviour of a subject might 'change' over time in the scanner e.g. fall asleep. Hence, we limit the correlation in time between the training data and test data. However, since we did not have an independent test set, we could not assess the generalization error. Instead, we estimated the error on the validation set.
 
 
@@ -105,14 +105,20 @@ We chose to randomly divide the data into the 5 folds to adjust to the fact that
 
 \subsection{Model and peak size}
 The GFP is an sensitive measure and it is not clear whether all local peaks of the GFP should be included as input in estimating the decomposition matrix, which is later applied on the entire time course of the EEG signal. The local peaks of the GFP can be seen as 'raw' microstates. We performed a grid search altering the minimum width and height of the peaks. The width and height was linearly spaced between 0 and 100 ms, and max(GFP)/2 respectively, constraining the transient brain state (peak) to be quasi stable near 100 ms.
-It would have been ideal to use the validation error of the EN to find the optimal design settings in the peak detection. However, since it has shown to be a very hard task to predict the DMN we used the design setting in which gave the single maximum correlation of one time course of a microstate with the DMN in the EN model.
+It would have been ideal to use the validation error of the EN to find the optimal design settings in the peak detection. However, it has shown to be a very hard task to predict the DMN, Instead, we used the design setting in which gave the single maximum correlation of one time course of a microstate with the DMN in the EN model.
 We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval 
 [ $10^{-4}$ ; $10^2$] in estimating the EN model.
 \subsection{Robustness of the microstates}
 In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
 \section{Results}
 \section{Discussion}
-MAGNUS:Not robust in correlation altering peaks
+Yuan identified 13 microstates related to 10 different RSN \cite{Yuan20122062}. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We have found........
+
+As mentioned it has shown to be a very challenging quest to relate the EGG microstates to the DMN IC.
+
+Comparing the microstates topography 
+
+In selecting the design parameters of the peak detection of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however  makes the measure sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
 %discuss comparison with Yuan article
 \if false
@@ -169,6 +175,7 @@ this \cite{Lamp86}.
 \pagebreak
 \fi
 \section{Conclusions}
+You take a machine that measures electrical potential by magnetism. Put a person in the machine with 30 electrodes on his head and tries to predict what goes on inside of it. Go figure
 \section{Acknowledgements}
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
