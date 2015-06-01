@@ -97,9 +97,8 @@ We chose to randomly divide the data into the 5 folds to adjust to the fact that
 
 In the experiments described we assumed that each subject is independent and further that microstates are common states across subjects (DO WE HAVE A REFERENCE HERE?). This allowed us to concatenated data from different subjects and perform model selection based on a larger data set.
 \subsection{Model and peak size}
-As suggested in 
-The GFP is an sensitive measure and it is not clear whether all local peaks of the GFP should be included as input in estimating the decomposition matrix. These local peaks can be seen as 'raw' microstates. We performed a grid search altering the minimum width and height of the peaks. The width and height was linearly spaced between 0 and 100 ms, and max(GFP)/2 respectively, constraining the transient brain state (peak) to be quasi stable near 100 ms.
-We used the maximum correlation of the time course of the microstate with the DMN and used these design settings for the elastic-net.
+The GFP is an sensitive measure and it is not clear whether all local peaks of the GFP should be included as input in estimating the decomposition matrix, which is later applied on the entire time course of the EEG signal. The local peaks of the GFP can be seen as 'raw' microstates. We performed a grid search altering the minimum width and height of the peaks. The width and height was linearly spaced between 0 and 100 ms, and max(GFP)/2 respectively, constraining the transient brain state (peak) to be quasi stable near 100 ms.
+It would have been ideal to use the validation error of the EN to find the optimal design settings in the peak detection. However, since it has shown to be a very hard task to predict the DMN we used the design setting in which gave the single maximum correlation of one time course of a microstate with the DMN in the EN model.
 We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval 
 [ $10^{-4}$ ; $10^2$] in estimating the EN model.
 \subsection{Robustness of the microstates}
