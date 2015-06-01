@@ -20,13 +20,7 @@ Anna Maria Walach (s121540) }
 
 \maketitle
 %
-\begin{abstract}
-Different studies using functional magnetic resonance imaging (fMRI) of the blood-oxygenation-level dependent (BOLD) signal have shown the resting brain activity is associated with slowly fluctuating hemodynamic signals (~10 s). More recently, multimodal functional imaging studies involving simultaneous acquisition of BOLD-fMRI and electroencephalography (EEG) data have suggested
-that the relatively slow hemodynamic fluctuations of some resting state networks (RSNs) evinced in the BOLD data are related to much faster (~100 ms) transient brain states reflected in EEG signals, that are referred to as “microstates” \cite{Yuan20122062}.
-
-In this project we replicated the fully data driven research method described in \cite{Yuan20122062}, i.e. we generated microstates from EEG based on their temporal similarity. We enriched the approach with different correlation mechanism and experiments aiming to improve robustness and correlation of microstates.
-
-Our results %TODO
+\begin{abstract}An active area of research in neuroscience deals with characterizing the behavior of resting state networks (RSN), responsible for most of the energy consumption of the brain. In particular, the default mode network (DMN) has been hypothesized to correspond to mind-wandering, and linked to the pathology of mental disorders. The DMN is associated with slowly fluctuating hemodynamic signals (~10 s). Analyses of EEG signals have revealed much shorter epochs (~100 ms) of stable brain states, called microstates. Several studies have used simultaneous EEG and fMRI recordings to find a relation between the DMN and microstates, with conflicting results. Replicating the data-driven approach developed by Yuan et al., we applied microstate analysis to EEG recordings from 8 patients from Glostrup hospital, and attempted to predict the activation level of the DMN, as well as find the correlation between the microstates and other RSNs. We found no strong correlations.
 
 \end{abstract}
 %
@@ -34,16 +28,14 @@ Our results %TODO
 machine learning, EEG, BOLD fMRI, microstates, Default Mode Network
 \end{keywords}
 %
-\section{Introduction}
-The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from BOLD fMRI, using the method described in \cite{Yuan20122062}.
+\section{Introduction}The aim of this project is to find a relation between EEG-derived microstates, and the Default Mode Network (DMN) from BOLD fMRI, using the method described in \cite{Yuan20122062}.
 
-Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If correlation between EEG and DMN from BOLD fMRI can be found, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
+Alterations in the DMN have been connected to various neurological diseases, like Alzheimer’s and schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN is easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If the DMN could be predicted using the EEG signal, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
-\subsection{Microstates}
-Microstates are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable (\~100 ms). They are derived from EEG signal using either temporal clustering or temporal ICA. Microstate analysis has been used for assessing the function of large-scale brain networks.
+\textbf{Microstates} are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable (\~100 ms). They are derived from the EEG signal using either temporal clustering or independent component analysis (ICA). Microstate analysis has been used for assessing the function of large-scale brain networks.
 
-\subsection{Default Mode Network}
-Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). Default Mode Network (DMN) is one of the most researched RSNs. It is becoming active when one mind is "wandering". Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
+\textbf{Default Mode Network}
+Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). The Default Mode Network (DMN) is one of the most researched RSNs. Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
 
 \subsection{Research topic}
 The topic of this article consists of few subproblems: 
@@ -56,6 +48,7 @@ The topic of this article consists of few subproblems:
 Although microstates analysis gathered more attention just recently, it was first described in \cite{lehmann1980reference}. This study showed that microstates are similar across subjects. It used method called \emph{adaptive segmentation} to derive microstates, in which the topography at chosen time stamps is compared to the one before it, and considered the start of a new microstate if the centroid locations of the positive or negative potentials change by more than a predetermined amount \cite{Khanna2015105}. Right now studies are focusing on different method called \emph{clustering analysis}, where the topographies from specific time stamps are used as an input for clustering algorithm. It groups them in set of classes based on topographic similarity \cite{Michel2009}. Recently, new method was proposed that uses independent component analysis to find microstate classes \cite{Yuan20122062}.
 
 Number of studies that tries to correlate EEG with fMRI is growing and microstate analysis is a popular tool to use in such projects. We can observe some promising results \cite{Yuan20122062}, that allows to assume the correlation is significant and can be found. 
+
 
 
 
