@@ -23,7 +23,7 @@ Anna Maria Walach (s121540) }
 Different studies using functional magnetic resonance imaging (fMRI) of the blood-oxygenation-level dependent (BOLD) signal have shown the resting brain activity is associated with slowly fluctuating hemodynamic signals (~10 s). More recently, multimodal functional imaging studies involving simultaneous acquisition of BOLD-fMRI and electroencephalography (EEG) data have suggested
 that the relatively slow hemodynamic fluctuations of some resting state networks (RSNs) evinced in the BOLD data are related to much faster (~100 ms) transient brain states reflected in EEG signals, that are referred to as “microstates” \cite{Yuan20122062}.
 
-In this project we replicated the research methods described in \cite{Yuan20122062}, i.e. we generated microstates from EEG based on their temporal, not spatial similarity. We enriched the approach with different correlation mechanism and experiments aiming to improve robustness and correlation of microstates.
+In this project we replicated the fully data driven research method described in \cite{Yuan20122062}, i.e. we generated microstates from EEG based on their temporal similarity. We enriched the approach with different correlation mechanism and experiments aiming to improve robustness and correlation of microstates.
 
 Our results %TODO
 
@@ -34,7 +34,7 @@ machine learning, EEG, BOLD fMRI, microstates, Default Mode Network
 \end{keywords}
 %
 \section{Introduction}
-The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from BOLD fMRI, using methods described in \cite{Yuan20122062}.
+The aim of this project is to find relation between EEG-derived microstates and Default Mode Network (DMN) from BOLD fMRI, using the method described in \cite{Yuan20122062}.
 
 Alterations in DMN have been connected to various neurological diseases, like Alzheimer’s or schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN can be easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If correlation between EEG and DMN from BOLD fMRI can be found, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
@@ -88,7 +88,7 @@ There are two kinds of input for algorithms in this section:
 \end{itemize} 
 
 \subsection{Elastic net}
-As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and the DMN IC.
+As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to 10 different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and the DMN IC.
 The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
 \begin{equation}
 \label{eq:Elastic Net}
