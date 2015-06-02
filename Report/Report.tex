@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{amsmath,graphicx,02460}
+\usepackage{multirow}
 
 \newcommand{\imgdir}{Images/} % Set the folder which contains the specific images for the report
 \toappear{02460 Advanced Machine Learning, DTU Compute, Spring 2015}
@@ -126,17 +127,17 @@ It would have been ideal to use the validation error of the EN to find the optim
 We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval 
 [ $10^{-4}$ ; $10^2$] in estimating the EN model.
 \subsection{Robustness of the microstates}
-In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
+In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 8-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the decomposition matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness. A table of robustness is given in the appendix in figure \ref{table:Robustness}.
 \section{Results}
 
-\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms gave the highest correlation.
+\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms provided the highest correlation.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{\imgdir corr}
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.05$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
-The two components DMN ICs, IC3 and IC7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively (see \ref{fig:corr001} in the appendix). We found a maximum correlation of $-0.0682$
+The two components DMN ICs, IC3 and IC7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively (see \ref{fig:corr001} in the appendix). We found a maximum correlation of $-0.0682$.
 
 \textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter ($\lambda$ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
 The selected topographies are shown in the appendix in figure \ref{fig:regressors}.
@@ -154,19 +155,18 @@ In this work we investigated the relation between the EGG microstates to the DMN
 In general it was found that between 10 and 18 microstates was selected by the EN using the validation error. The quality of the prediction is rather low which makes this variable selection sensitive.
 
 \textbf{Comparing results with Yuan.} \cite{Yuan20122062} identified 13 microstates related to 10 different RSN. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We found 1 and 2, respectively for the two DMN IC.
-The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC in \cite{Yuan20122062} and in our experiment it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours.
+The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC with those found in \cite{Yuan20122062} it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours. Which might suggest that even more focus should be given to artefact removal.
 
 \textbf{Comparing the microstates topography} 
-Comparing fig. 3 in \cite{Yuan20122062} it is seen that 
+Comparing fig. 3 in \cite{Yuan20122062} it is seen that FRANS WRITE SOMETHING OR DELETE!!!!!!
 
-\textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however,  makes the measure sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
+\textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however, makes the choice sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
-%discuss comparison with Yuan article
-%\vfill
-%\pagebreak
+\textbf{Assumptions}. We assumed that microstates are common states across subjects. It is clearly seen in figure \ref{table:Robustness}. in the appendix that altering the peak size decreases the similarity of the microstates across subjects. This give some rise for concern sine the optimal correlation was found with a minimum width of 100 ms. However the decrease in similarity is subtle compared to the change in height.
+
 
 \section{Conclusions}
-We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is not too satisfactory. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
+We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates, followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is not too satisfactory. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
 
 \section{Acknowledgements}
 The data has been available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
@@ -203,5 +203,46 @@ FOR THE APPENDIX
     \caption{Selection of parameters. Each line corresponds to a $\lambda$. It is seen that 13 regressors produces the lowest error.}
     \label{fig:parameters}
 \end{figure}
+
+
+\begin{table}[H]
+\caption{Maximum Correlation of single microstate time course with DMN IC.}
+\label{table:Robustness}
+\centering
+\scalebox{1}{
+{\renewcommand{\arraystretch}{1}
+\begin{tabular}{lr|rrrrrrrrrrrrrrrrrrrrr} % names left, else right
+\hline
+GFP Peaks & & \multicolumn{3}{c}{Min Width}  \\ 
+& & 0 & 1.75 & 2.5 \\
+\hline
+\multirow{3}{*}{Min Height}
+& 0 ms & 0.0484 & 0.0457 & 0.0682 \\
+& 50 ms & 0.0472 & 0.0511 & 0.0399 \\
+& 100 ms & 0.0459 & 0.0611 & 0.0564 \\
+\hline
+\end{tabular}
+}}
+\end{table}
+
+\begin{table}[H]
+\caption{Robustness.}
+\label{table:Robustness}
+\centering
+\scalebox{1}{
+{\renewcommand{\arraystretch}{1}
+\begin{tabular}{lr|rrrrrrrrrrrrrrrrrrrrr} % names left, else right
+\hline
+GFP Peaks & & \multicolumn{3}{c}{Min Width}  \\ 
+& & 0 & 1.75 & 2.5 \\
+\hline
+\multirow{3}{*}{Min Height}
+& 0 ms & 24.3 & 34.2 & 41.9\\
+& 50 ms & 78.7 & 78.7 & 89.1\\
+& 100 ms & 110.0 & 140.0 & 169.0\\
+\hline
+\end{tabular}
+}}
+\end{table}git
 
 \end{document}
