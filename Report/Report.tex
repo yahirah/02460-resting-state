@@ -12,7 +12,7 @@
 \name{Magnus Alexander Bitsch (s103243), 
 Franciszek Olaf Zdyb (s093086),
 Anna Maria Walach (s121540) }
-\address{Technical University Of Denmark}
+\address{Technical University of Denmark}
 \bibliographystyle{apalike}
 \begin{document}
 %\ninept
@@ -62,7 +62,7 @@ The data contains 10 minutes probes from 20 subjects, recorded in free different
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.23]{\imgdir seismo}
-    \caption{Time courses from EEG }
+    \caption{Time courses from EEG.}
     \label{fig:eeg}
 \end{figure}
 
@@ -95,12 +95,6 @@ We concatenated the topographies from peaks across subjects, and run ICA. Our al
 We constructed a binary matrix which encodes which microstate has the highest activation at each time, and convolved it with the hemodynamic response function to adjust for the time-delay of the BOLD fMRI response. These were used as regressors in the elastic net model \cite{hastie01}. 
 
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[scale=0.3]{\imgdir hrf}
-    \caption{Hemodynamic response function used in the project.}
-    \label{fig:hrf}
-\end{figure}
 \section{Correlation of microstates and DMN}
 In this section, we describe proccess of finding the best subset of microstates time course used for predicting the DMN activity and the predicting algorithms.
 
@@ -115,8 +109,8 @@ There are two kinds of input for algorithms in this section:
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.1]{\imgdir regressors}
-    \caption{Microstates time course used as regressors. Shown are four out of the thirty time courses.}
+    \includegraphics[scale=0.08]{\imgdir regressors}
+    \caption{Microstates time course used as regressors. Shown are four out of thirty time courses.}
     \label{fig:regressors}
 \end{figure}
 \subsection{Elastic net}
@@ -145,14 +139,24 @@ We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval
 In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 5-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the mixing matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness.
 \section{Results}
 
-
+\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms gave the highest correlation.
 \begin{figure}[!ht]
     \centering
-    \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.26]{\imgdir corr}
+    \includegraphics[trim=0cm 0cm 0cm 0cm, width=\linewidth]{\imgdir corr}
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.05$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
 The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively. We found a maximum correlation of $0.0682$
+
+\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using XXXXX microstates as regressors which is shown in figure.A run resulting in 8 microstates as predictors is shown in the figures 5 and 7, 
+with IC7 of the fMRI data as the response variable. Here we found the optimal 
+tuning parameter (λ = 12.3285) which means that we have a high penalty on
+the size of parameters in the elastic net model.
+Investigating the regressors we notice that some of the microstates appear 
+to be eyeblinks (IC8  in fig. 2).
+The normalized mean square error is 0.9961, where a value of 1.0 
+corresponds to predicting the mean."
+The selected topographies are shown in the appendix (REF!!!).
 
 \begin{figure}[!ht]
     \centering
@@ -163,6 +167,8 @@ The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlation
 
 \section{Discussion}
 It has shown to be a very challenging quest to relate the EGG microstates to the DMN IC. Even after artefact correction and altering various parameters and algorithms the MSE over the variance is still close to one. It has been shown that there is correlation between the EEG microstates and the DMN IC, however, the relation has not yet been fully uncovered.
+
+In general it was found that between 10 and 18 microstates was selected by the EN using the validation error. The quality of the prediction is rather low which makes this variable selection sensitive.
 
 \textbf{Comparing results with Yuan.} \cite{Yuan20122062} identified 13 microstates related to 10 different RSN. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We found 1 and 2, respectively for the two DMN IC.
 The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC in \cite{Yuan20122062} and in our experiment it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours.
@@ -191,4 +197,12 @@ Andreas Trier Poulsen, both from DTU, for all the support and help.
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.001$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.3]{\imgdir hrf}
+    \caption{Hemodynamic response function used in the project.}
+    \label{fig:hrf}
+\end{figure}
+
 \end{document}
