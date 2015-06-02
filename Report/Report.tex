@@ -20,22 +20,21 @@ Anna Maria Walach (s121540) }
 
 \maketitle
 %
-\begin{abstract}An active area of research in neuroscience deals with characterizing the behavior of resting state networks (RSN), responsible for most of the energy consumption of the brain. In particular, the default mode network (DMN) has been hypothesized to correspond to mind-wandering, and linked to the pathology of mental disorders. The DMN is associated with slowly fluctuating hemodynamic signals (~10 s). Analyses of EEG signals have revealed much shorter epochs (~100 ms) of stable brain states, called microstates. Several studies have used simultaneous EEG and fMRI recordings to find a relation between the DMN and microstates, with conflicting results. Replicating the data-driven approach developed by Yuan et al., we applied microstate analysis to EEG recordings from 8 patients from Glostrup hospital, and attempted to predict the activation level of the DMN, as well as find the correlation between the microstates and other RSNs. We found no strong correlations.
+\begin{abstract}An active area of research in neuroscience deals with characterizing the behavior of resting state networks (RSN), responsible for most of the energy consumption of the brain. In particular, the default mode network (DMN) has been hypothesized to correspond to mind-wandering, and linked to the pathology of mental disorders. The DMN is associated with slowly fluctuating hemodynamic signals (~10 s). Analyses of EEG signals have revealed much shorter epochs (~100 ms) of stable brain states, called microstates. Several studies have used simultaneous EEG and fMRI recordings to find a relation between the DMN and microstates, with conflicting results. Replicating the data-driven approach developed by Yuan et al., we applied microstate analysis to EEG recordings from 8 patients from Glostrup hospital, and attempted to predict the activation level of the DMN, as well as find correlations between the microstates and other RSNs. We found no strong correlations.
 
 \end{abstract}
 %
 \begin{keywords}
-machine learning, EEG, BOLD fMRI, microstates, Default Mode Network
+machine learning, EEG, BOLD fMRI, microstates, Default Mode Network, ICA
 \end{keywords}
 %
 \section{Introduction}The aim of this project is to find a relation between EEG-derived microstates, and the Default Mode Network (DMN) from BOLD fMRI, using the method described in \cite{Yuan20122062}.
 
-Alterations in the DMN have been connected to various neurological diseases, like Alzheimer’s and schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN is easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If the DMN could be predicted using the EEG signal, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
-
+Alterations in the DMN have been connected to various neurological diseases, like Alzheimer’s and schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. The DMN is easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If the DMN could be predicted using the EEG signal, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
+\textbf{Default Mode Network}
+Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting, but not sleeping. fMRI studies have shown that when the brain is at rest, instrinsic brain activity is organized into discrete networks associated with distinct functions. The Default Mode Network (DMN) is one of the most researched RSNs. It becomes deactivated when switching to a cognitive task \cite{dmn_description}, or when individuals are focused on the external world. The DMN is active when engaged in autobiographical memory retrieval, envisioning the future, and conceiving the perspectives of others. 
 \textbf{Microstates} are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable ($\sim$100ms). They are derived from the EEG signal using either temporal clustering or independent component analysis (ICA). Microstate analysis has been used for assessing the function of large-scale brain networks.
 
-\textbf{Default Mode Network}
-Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). The Default Mode Network (DMN) is one of the most researched RSNs. Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
 
 \subsection{Research topic}
 The topic of this article consists of few subproblems: 
