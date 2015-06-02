@@ -32,7 +32,7 @@ machine learning, EEG, BOLD fMRI, microstates, Default Mode Network
 
 Alterations in the DMN have been connected to various neurological diseases, like Alzheimer’s and schizophrenia \cite{Yuan20122062}, \cite{Khanna2015105}. DMN is easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If the DMN could be predicted using the EEG signal, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
-\textbf{Microstates} are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable (\~100 ms). They are derived from the EEG signal using either temporal clustering or independent component analysis (ICA). Microstate analysis has been used for assessing the function of large-scale brain networks.
+\textbf{Microstates} are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable ($\sim$100ms). They are derived from the EEG signal using either temporal clustering or independent component analysis (ICA). Microstate analysis has been used for assessing the function of large-scale brain networks.
 
 \textbf{Default Mode Network}
 Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting (but not sleeping). The Default Mode Network (DMN) is one of the most researched RSNs. Its subsystems include part of the medial temporal lobe for memory, part of the medial prefrontal cortex for theory of mind, and the posterior cingulate cortex for integration, along with the adjacent ventral precuneus and the medial, lateral and inferior parietal cortex \cite{dmn_description}.
@@ -87,7 +87,7 @@ We concatenated the topographies from peaks across subjects, and run ICA. Our al
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.2]{\imgdir microstates_poster}
+    \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.25]{\imgdir Microstates30usedEN}
     \caption{Spacial images of microstates derrived from ICA.}
     \label{fig:microstates}
 \end{figure}
@@ -116,7 +116,7 @@ There are two kinds of input for algorithms in this section:
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.1]{\imgdir regressors}
-    \caption{Microstates time series used as regressors}
+    \caption{Microstates time course used as regressors. Shown are four out of the thirty time courses.}
     \label{fig:regressors}
 \end{figure}
 \subsection{Elastic net}
@@ -148,38 +148,47 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.25]{\imgdir corr}
-    \caption{Grid representing correlation between microstates (Y axis) and ICs (X axis)}
+    \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.26]{\imgdir corr}
+    \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.05$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
-
+The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively. We found a maximum correlation of $0.0682$
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.25]{\imgdir prediction}
-    \caption{Predicting DMN signal (red line) using microstates (blue line).}
+    \caption{Predicting DMN signal. DMN IC (red line) and prediction by microstates (blue line).}
     \label{fig:grid}
 \end{figure}
 
 \section{Discussion}
-Yuan identified 13 microstates related to 10 different RSN \cite{Yuan20122062}. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We have found........
+It has shown to be a very challenging quest to relate the EGG microstates to the DMN IC. Even after artefact correction and altering various parameters and algorithms the MSE over the variance is still close to one. It has been shown that there is correlation between the EEG microstates and the DMN IC, however, the relation has not yet been fully uncovered.
 
-As mentioned it has shown to be a very challenging quest to relate the EGG microstates to the DMN IC.
+\textbf{Comparing results with Yuan.} \cite{Yuan20122062} identified 13 microstates related to 10 different RSN. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We found 1 and 2, respectively for the two DMN IC.
+The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC in \cite{Yuan20122062} and in our experiment it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours.
 
-Comparing the microstates topography 
 
-In selecting the design parameters of the peak detection of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however  makes the measure sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
+\textbf{Comparing the microstates topography} 
+
+\textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however,  makes the measure sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
 %discuss comparison with Yuan article
 %\vfill
 %\pagebreak
 
 \section{Conclusions}
-% You take a machine that measures electrical potential by magnetism. Put a person in the machine with 30 electrodes on his head and tries to predict what goes on inside of it. Go figure
+It has been found that there is a correlation between the EEG microstates and the Default Mode Network from fMRI, however, the magnitude is not too satisfactory. A model for predicting the signal has been produced but the number of parameters is not robust. This leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
+
 \section{Acknowledgements}
 The data has been available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
 Andreas Trier Poulsen, both from DTU, for all the support and help.
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.26]{\imgdir corr001}
+    \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.001$ (uncorrected).}
+    \label{fig:grid}
+\end{figure}
 \end{document}
