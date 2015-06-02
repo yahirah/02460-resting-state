@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath,graphicx,02460}
 \usepackage{multirow}
-
+\usepackage{multicol}
 \newcommand{\imgdir}{Images/} % Set the folder which contains the specific images for the report
 \toappear{02460 Advanced Machine Learning, DTU Compute, Spring 2015}
 
@@ -175,8 +175,10 @@ Andreas Trier Poulsen, both from DTU, for all the support and help.
 \bibliography{refs}
 
 \newpage
-FOR THE APPENDIX
-
+\clearpage
+\onecolumn
+\centering
+\huge{APPENDIX}
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{\imgdir corr001}
@@ -186,7 +188,7 @@ FOR THE APPENDIX
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=\linewidth]{\imgdir hrf}
+    \includegraphics[scale=0.8]{\imgdir hrf}
     \caption{Hemodynamic response function used in the project.}
     \label{fig:hrf}
 \end{figure}
@@ -245,6 +247,6 @@ GFP Peaks & & \multicolumn{3}{c}{Min Width}  \\
 \hline
 \end{tabular}
 }}
-\end{table}git
+\end{table}
 
 \end{document}
