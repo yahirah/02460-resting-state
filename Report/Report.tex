@@ -148,21 +148,14 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 \end{figure}
 The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively. We found a maximum correlation of $0.0682$
 
-\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using XXXXX microstates as regressors which is shown in figure.A run resulting in 8 microstates as predictors is shown in the figures 5 and 7, 
-with IC7 of the fMRI data as the response variable. Here we found the optimal 
-tuning parameter (λ = 12.3285) which means that we have a high penalty on
-the size of parameters in the elastic net model.
-Investigating the regressors we notice that some of the microstates appear 
-to be eyeblinks (IC8  in fig. 2).
-The normalized mean square error is 0.9961, where a value of 1.0 
-corresponds to predicting the mean."
+\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter (λ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
 The selected topographies are shown in the appendix (REF!!!).
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.25]{\imgdir prediction}
     \caption{Predicting DMN signal. DMN IC (red line) and prediction by microstates (blue line).}
-    \label{fig:grid}
+    \label{fig:pred}
 \end{figure}
 
 \section{Discussion}
