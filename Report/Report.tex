@@ -146,7 +146,7 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.05$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
-The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively. We found a maximum correlation of $0.0682$
+The two components DMN ICs, IC3 and IC7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively (see \ref{fig:corr001} in the appendix). We found a maximum correlation of $-0.0682$
 
 \textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter ($\lambda$ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
 The selected topographies are shown in the appendix in figure \ref{fig:regressors}.
@@ -176,7 +176,7 @@ Comparing fig. 3 in \cite{Yuan20122062} it is seen that
 %\pagebreak
 
 \section{Conclusions}
-We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates. However, the magnitude of this correlation, even though significant, is not too satisfactory. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
+We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is not too satisfactory. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
 
 \section{Acknowledgements}
 The data has been available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
@@ -190,7 +190,7 @@ FOR THE APPENDIX
     \centering
     \includegraphics[width=\linewidth]{\imgdir corr001}
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.001$ (uncorrected).}
-    \label{fig:grid}
+    \label{fig:corr001}
 \end{figure}
 
 \begin{figure}[!ht]
