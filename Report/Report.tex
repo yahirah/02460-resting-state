@@ -38,7 +38,7 @@ The main content of the article is a description of the pipeline from raw EEG-si
 \begin{itemize}
 \item \textbf{artefact removal} - simultaneous recording of EEG and fMRI is causing a lot of noise in EEG signal. EEG is also very sensitive to heartbeat and eye and body movements. Removing artefacts is an important part of feature engineering. 
 \item \textbf{retrieving microstates} - different methods can be used to retrieve microstates from EEG \cite{Khanna2015105}. Establishing proper pipeline for retrieving microstates allows them to be robust and valuable features. 
-\item \textbf{correlation} - once we obtain a features from EEG and values from fMRI, there are various tools that can be used to find correlation. Choosing a right one allows for finding hopefully high correlation with low bias. 
+\item \textbf{correlation} - once we obtain features from the EEG, there are various ways one can relate them to activation time-series of the fMRI independent components. The simplest is simply calculating the correlation matrix, which also allows for comparison with previous work. We also train an elastic net model, in the hopes of being able to predict the DMN on a test set.
 \end{itemize}
 \subsection{Current status in literature}
 Three recent articles have convoluted the microstate time series with the hemodynamic response function and used these as regressors in a GLM, with the fMRI signal as the dependent variable. Musso et al. found activation patterns resembling several RSNs, including the DMN. Van de Ville et al. found no EEG-correlate of the DMN, but found correlations with other RSNs. Yuan et al. found that individual microstates were temporally associated with the activity of only a few RSNs. All three studies used a different number of microstates, and different approaches towards calculating them.
@@ -58,11 +58,11 @@ The data contains 10 minute recordings from 20 subjects, recorded in free differ
 \end{figure}
 
 \subsection{Artefact removal}
-Initial cleaning of the data, especially removing the fMRI artefacts, has been performed by Glostrup Hospital staff, followed by further artefact removal performed by Andreas Trier Poulsen. This process included notch- and low-pass filtering, as well as using ECG and EOG to get rid of eye blinks and heart beat artefacts. 
-The data from only 5 subjects (in all conditions) remained.
+Initial cleaning of the data, especially removing the fMRI artefacts, has been performed by Glostrup Hospital staff, followed by further artefact removal performed by Andreas Trier Poulsen. This process included notch- and low-pass filtering, as well as using ECG and EOG to get rid of eye blinks and heartbeat artefacts. Molgedey-Schuster ICA was used to remove heartbeat artefacts.
+Recordings from 8 subjects were deemed of sufficiently high quality for further use.
 
 \section{Generating microstates}
-The input data for this process is artefact-free data from five subjects in all conditions, from 30 electrodes. At the end, we have 30 microstates, from which some will be chosen as regressors in correlation task. 
+The input data for this process assumed artefact-free data from eight subjects in all conditions, from 30 electrodes. At the end, we have 30 microstates, from which some will be chosen as regressors in correlation task. 
 \subsection{Global Field Power}
 Following Yuan et al., we calculated the Global Field Power time course (GFP), which is a standard deviation across electrodes. Then we found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected for highest correlation with the fMRI data via a grid search.
 
@@ -106,7 +106,7 @@ There are two kinds of input for algorithms in this section:
 \end{figure}
 \subsection{Elastic net}
 As suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. Yuan identified 13 microstates related to 10 different RSN. We wished to find which of the microstates time course that characterizes the default mode network. Performing both feature selection and variance reduction, by shrinking the coefficients in imposing a penalty on the coefficients, the elastic-net (EN) model \cite{hastie01} provides a framework for  describing the relation between the EEG microstates and the DMN IC.
-The elastic-net selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
+The elastic-net selects variables like the lasso algorithm, and shrinks together the coefficients of correlated predictors like ridge \cite{hastie01}. The elastic net penalty is given in (\ref{eq:Elastic Net}).
 \begin{equation}
 \label{eq:Elastic Net}
 \lambda \sum_{j=1}^p
@@ -130,7 +130,7 @@ We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval
 In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 8-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the decomposition matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness. A table of robustness is given in the appendix in table \ref{table:similarity}.
 \section{Results}
 
-\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms provided the highest correlation.
+\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms provided the highest correlation, as seen in the table \ref{table:correlation} in the appendix.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{\imgdir corr}
@@ -139,7 +139,7 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 \end{figure}
 The two components DMN ICs, IC3 and IC7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively (see figure \ref{fig:corr001} in the appendix). We found a maximum correlation of $-0.0682$.
 
-\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter ($\lambda$ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
+\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors. The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter ($\lambda$ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
 The selected topographies are shown in the appendix in figure \ref{fig:regressors}.
 
 \begin{figure}[!ht]
@@ -157,20 +157,17 @@ In general it was found that between 10 and 18 microstates was selected by the E
 \textbf{Comparing results with Yuan.} \cite{Yuan20122062} identified 13 microstates related to 10 different RSN. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We found 1 and 2, respectively for the two DMN IC.
 The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC with those found in \cite{Yuan20122062} it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours. Which might suggest that even more focus should be given to artefact removal.
 
-\textbf{Comparing the microstates topography} 
-Comparing fig. 3 in \cite{Yuan20122062} it is seen that FRANS WRITE SOMETHING OR DELETE!!!!!!
-
 \textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however, makes the choice sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
 \textbf{Assumptions}. We assumed that microstates are common states across subjects. It is clearly seen in table \ref{table:similarity} in the appendix that altering the peak size decreases the similarity of the microstates across subjects. This give some rise for concern sine the optimal correlation was found with a minimum width of 100 ms. However the decrease in similarity is subtle compared to the change in height.
 
 
 \section{Conclusions}
-We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates, followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is not too satisfactory. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
+We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates, followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is very small. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varxying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
 
 \section{Acknowledgements}
-The data has been available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
-Andreas Trier Poulsen, both from DTU, for all the support and help.
+The data has been made available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
+Andreas Trier Poulsen, both from DTU Compute, for supervising.
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
 
