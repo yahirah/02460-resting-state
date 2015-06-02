@@ -171,8 +171,7 @@ Comparing fig. 3 in \cite{Yuan20122062} it is seen that FRANS WRITE SOMETHING OR
 
 \textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however, makes the choice sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
-\textbf{Assumptions}. We assumed that microstates are common states across subjects. It is clearly seen in figure \ref{table:Robustness}. in the appendix that altering the peak size decreases the similarity of the microstates among subjects. This gives rise for concern 
-On the contrary we found that the microstate
+\textbf{Assumptions}. We assumed that microstates are common states across subjects. It is clearly seen in figure \ref{table:Robustness}. in the appendix that altering the peak size decreases the similarity of the microstates across subjects. This give some rise for concern sine the optimal correlation was found with a minimum width of 100 ms. However the decrease in similarity is subtle compared to the change in height.
 
 
 \section{Conclusions}
@@ -216,17 +215,17 @@ FOR THE APPENDIX
 
 
 \begin{table}[H]
-\caption{Correlation.}
+\caption{Maximum Correlation of single microstate time course with DMN IC.}
 \label{table:Robustness}
 \centering
 \scalebox{1}{
 {\renewcommand{\arraystretch}{1}
 \begin{tabular}{lr|rrrrrrrrrrrrrrrrrrrrr} % names left, else right
 \hline
-GFP Peaks & & \multicolumn{3}{c}{Min Height}  \\ 
+GFP Peaks & & \multicolumn{3}{c}{Min Width}  \\ 
 & & 0 & 1.75 & 2.5 \\
 \hline
-\multirow{3}{*}{Min Width}
+\multirow{3}{*}{Min Height}
 & 0 ms & 0.0484 & 0.0457 & 0.0682 \\
 & 50 ms & 0.0472 & 0.0511 & 0.0399 \\
 & 100 ms & 0.0459 & 0.0611 & 0.0564 \\
@@ -243,16 +242,16 @@ GFP Peaks & & \multicolumn{3}{c}{Min Height}  \\
 {\renewcommand{\arraystretch}{1}
 \begin{tabular}{lr|rrrrrrrrrrrrrrrrrrrrr} % names left, else right
 \hline
-GFP Peaks & & \multicolumn{3}{c}{Min Height}  \\ 
+GFP Peaks & & \multicolumn{3}{c}{Min Width}  \\ 
 & & 0 & 1.75 & 2.5 \\
 \hline
-\multirow{3}{*}{Min Width}
+\multirow{3}{*}{Min Height}
 & 0 ms & 24.3 & 34.2 & 41.9\\
 & 50 ms & 78.7 & 78.7 & 89.1\\
 & 100 ms & 110.0 & 140.0 & 169.0\\
 \hline
 \end{tabular}
 }}
-\end{table}
+\end{table}g
 
 \end{document}
