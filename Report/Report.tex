@@ -61,7 +61,7 @@ The data contains 10 minutes probes from 20 subjects, recorded in free different
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.23]{\imgdir seismo}
+    \includegraphics[width=\linewidth]{\imgdir seismo}
     \caption{Time courses from EEG.}
     \label{fig:eeg}
 \end{figure}
@@ -87,7 +87,7 @@ We concatenated the topographies from peaks across subjects, and run ICA. Our al
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.25]{\imgdir Microstates30usedEN}
+    \includegraphics[width=\linewidth]{\imgdir Microstates30usedEN}
     \caption{Spacial images of microstates derrived from ICA.}
     \label{fig:microstates}
 \end{figure}
@@ -109,7 +109,7 @@ There are two kinds of input for algorithms in this section:
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.08]{\imgdir regressors}
+    \includegraphics[width=0.7\linewidth]{\imgdir regressors}
     \caption{Microstates time course used as regressors. Shown are four out of thirty time courses.}
     \label{fig:regressors}
 \end{figure}
@@ -142,32 +142,32 @@ In order to evaluate the robustness of the algorithm of finding microstates, we 
 \textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms gave the highest correlation.
 \begin{figure}[!ht]
     \centering
-    \includegraphics[trim=0cm 0cm 0cm 0cm, width=\linewidth]{\imgdir corr}
+    \includegraphics[width=\linewidth]{\imgdir corr}
     \caption{Correlation matrix between microstates (Y axis) and ICs of fMRI (X axis). The correlation is thresholded at the significance level of $p<0.05$ (uncorrected).}
     \label{fig:grid}
 \end{figure}
 The two components DMN ICs, no. 3 and no. 7, had 3 and 5 significant correlations respectively on the level of $p<0.05$. On the level of $p<0.001$ this was reduced to 1 and 2 significant correlations respectively. We found a maximum correlation of $0.0682$
 
-\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter (λ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
+\textbf{Model.} The elastic net found that 10-18 microstates is the optimal number of regressors.  The best run we have found was using 13 microstates as regressors which is shown in figure \ref{fig:pred} with IC7 of the fMRI data as the response variable. Here we found the optimal tuning parameter ($\lambda$ = 2.6561) which means that we have a penalty on the size of parameters in the elastic net model. The normalized mean square error is 0.9928, where a value of 1.0 corresponds to predicting the mean."
 The selected topographies are shown in the appendix (REF!!!).
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.25]{\imgdir prediction}
+    \includegraphics[width=\linewidth]{\imgdir prediction}
     \caption{Predicting DMN signal. DMN IC (red line) and prediction by microstates (blue line).}
     \label{fig:pred}
 \end{figure}
 
 \section{Discussion}
-It has shown to be a very challenging quest to relate the EGG microstates to the DMN IC. Even after artefact correction and altering various parameters and algorithms the MSE over the variance is still close to one. It has been shown that there is correlation between the EEG microstates and the DMN IC, however, the relation has not yet been fully uncovered.
+In this work we investigated the relation between the EGG microstates to the DMN IC, which has shown to be a very challenging quest. After artefact correction and altering various parameters and algorithms the MSE over the variance is still close to one. However, it has been shown that there is correlation between the EEG microstates and the DMN IC but the relation has not yet been fully uncovered.
 
 In general it was found that between 10 and 18 microstates was selected by the EN using the validation error. The quality of the prediction is rather low which makes this variable selection sensitive.
 
 \textbf{Comparing results with Yuan.} \cite{Yuan20122062} identified 13 microstates related to 10 different RSN. Yuan found 3 EEG microstates significantly ($p<0.001$ (uncorrected)) correlated with the DMN IC. We found 1 and 2, respectively for the two DMN IC.
 The magnitude of the correlations found in our experiment corresponds well to the ones found by Yuan. Comparing the maximum correlation of the DMN IC in \cite{Yuan20122062} and in our experiment it seems that Yuan had a slightly higher maximum correlation of about twice the size of ours.
 
-
 \textbf{Comparing the microstates topography} 
+Comparing fig. 3 in \cite{Yuan20122062} it is seen that 
 
 \textbf{Selecting the design parameters}. The peak detection design settings of the GFP, we choose the setting with the one microstate that was maximally correlated with the DMN IC. This gives the maximal correlated single time course design setting, however,  makes the measure sensitive. One could instead use two or more time courses for the correlation for the optimal design setting, however as suggested in the literature \cite{Yuan20122062}, each RSN is related with one or a combination of several microstates. It is therefore not clear whether a more robust measure is to be preferred, since a satisfactory measure of the test error has not been found.
 
@@ -184,6 +184,8 @@ Andreas Trier Poulsen, both from DTU, for all the support and help.
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
 
+\newpage
+FOR THE APPENDIX
 \begin{figure}[!ht]
     \centering
     \includegraphics[trim=4cm 0cm 0cm 0cm, scale=0.26]{\imgdir corr001}
@@ -193,9 +195,23 @@ Andreas Trier Poulsen, both from DTU, for all the support and help.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.3]{\imgdir hrf}
+    \includegraphics[width=\linewidth]{\imgdir hrf}
     \caption{Hemodynamic response function used in the project.}
     \label{fig:hrf}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{\imgdir regressors_usedEN}
+    \caption{The 13 slected regressors by the elastic-net shown as topographies.}
+    \label{fig:regressors}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{\imgdir parameters}
+    \caption{Selection of parameters. Each line corresponds to a $\lambda$. It is seen that 13 regressors produces the lowest error.}
+    \label{fig:parameters}
 \end{figure}
 
 \end{document}
