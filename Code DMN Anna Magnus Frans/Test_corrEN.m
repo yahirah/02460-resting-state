@@ -185,7 +185,14 @@ size(Xall)
 X = Xall;
 y = yall;
 
+%%%%%%% convolving the response
+y = conv(yall,ones(1,10),'same');
+clf()
+plot(yall)
+hold on
+plot(y)
 max(abs(corr(X,y)))
+%%%%%%%
 
 [n,p]=size(X); % Extract dimensions
 h = 100; % For values of lambda
