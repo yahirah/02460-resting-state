@@ -128,11 +128,9 @@ We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval
 [ $10^{-4}$ ; $10^2$] in estimating the EN model.
 \subsection{Robustness of the microstates}
 In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 8-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the decomposition matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness. A table of robustness is given in the appendix in figure \ref{table:Robustness}.
-
-
 \section{Results}
 
-\textbf{Correlation.} In the grid search for optimal parameters for the peak detection we found that using a minimum peak width of 100 ms provided the highest correlation.
+\textbf{Correlation.} In the grid search of the optimal parameters for the peak detection we found that using a minimum sampling length of 100 ms provided the highest correlation.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{\imgdir corr}
