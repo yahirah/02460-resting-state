@@ -21,7 +21,7 @@ Anna Maria Walach (s121540) }
 
 \maketitle
 %
-\begin{abstract}An active area of research in neuroscience deals with characterizing the behavior of resting state networks (RSN), responsible for most of the energy consumption of the brain. In particular, the default mode network (DMN) has been hypothesized to correspond to mind-wandering, and linked to the pathology of mental disorders. The DMN is associated with slowly fluctuating hemodynamic signals (~10 s). Analyses of EEG signals have revealed much shorter epochs (~100 ms) of stable brain states, called microstates. Several studies have used simultaneous EEG and fMRI recordings to find a relation between the DMN and microstates, with conflicting results. Replicating the data-driven approach developed by Yuan et al., we applied microstate analysis to EEG recordings from 8 patients from Glostrup hospital, and attempted to predict the activation level of the DMN, as well as to find correlations between the microstates and other RSNs. We found no strong correlations.
+\begin{abstract}An active area of research in neuroscience deals with characterizing the behavior of resting state networks (RSN), responsible for most of the energy consumption of the brain. In particular, the default mode network (DMN) has been hypothesized to correspond to mind-wandering, and linked to the pathology of mental disorders. The DMN is associated with slowly fluctuating hemodynamic signals (~10 s). Analyses of EEG signals have revealed much shorter epochs (~100 ms) of stable brain states, called microstates. Several studies have used simultaneous EEG and fMRI recordings to find a relation between the DMN and microstates, with conflicting results. Replicating the data-driven approach developed by \cite{Yuan20122062}, we applied microstate analysis to EEG recordings from 8 patients from Glostrup hospital, and attempted to predict the activation level of the DMN, as well as to find correlations between the microstates and other RSNs. We found no strong correlations.
 
 \end{abstract}
 %
@@ -30,7 +30,7 @@ machine learning, EEG, BOLD fMRI, microstates, Default Mode Network, ICA
 \end{keywords}
 %
 \section{Introduction}
-Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting, but not sleeping. fMRI studies have shown that when the brain is at rest, instrinsic brain activity is organized into discrete networks associated with distinct functions. The \textbf{Default Mode Network} is one of the most researched RSNs. It becomes deactivated when switching to a cognitive task \cite{dmn_description}, or when individuals are focused on the external world. The DMN is active when engaged in autobiographical memory retrieval, envisioning the future, conceiving the perspectives of others, and mindwandering. Variations in the activity of the DMN have been linked to several clinical disorders, including Alzheimer’s, schizophrenia, autism, depression, ADHD and PTSD \cite{Buckner08thebrain’s}.
+Resting State Networks (RSNs) are networks of brain regions, that are active when a person is resting, but not sleeping. Functional magnetic resonance imaging (fMRI) studies have shown that when the brain is at rest, instrinsic brain activity is organized into discrete networks associated with distinct functions. The \textbf{Default Mode Network} is one of the most researched RSNs. It becomes deactivated when switching to a cognitive task \cite{dmn_description}, or when individuals are focused on the external world. The DMN is active when engaged in autobiographical memory retrieval, envisioning the future, conceiving the perspectives of others, and mindwandering. Variations in the activity of the DMN have been linked to several clinical disorders, including Alzheimer’s, schizophrenia, autism, depression, ADHD and PTSD \cite{Buckner08thebrain’s}.
 \textbf{Microstates} are unique topographic distributions of the electrical field potential in the brain  \cite{Khanna2015105}. They are transient, patterned and quasi stable ($\sim$100ms). They are derived from the EEG signal using either temporal clustering or independent component analysis (ICA). Microstate analysis has been used for assessing the function of large-scale brain networks, as it allows representing the entire signal by a small set of topographic maps that alternate among themselves at discrete intervals. The aim of this project is to find a relation between EEG-derived microstates, and the DMN from BOLD fMRI, using the method described in \cite{Yuan20122062}. The DMN is easily detected by fMRI scanning, but it is an expensive procedure requiring a visit to the hospital. If the DMN could be predicted using the EEG signal, it may allow the use of EEG as a cheaper and more portable tool for diagnosis of neurological diseases.
 
 \subsection{Overview}
@@ -64,7 +64,7 @@ Recordings from 8 subjects were deemed of sufficiently high quality for further 
 \section{Generating microstates}
 The input data for this process assumed artefact-free data from eight subjects in all conditions, from 30 electrodes. At the end, we have 30 microstates, from which we hope the time course will be correlated with the DMN IC and thus can be used as regressors.
 \subsection{Global Field Power}
-Following Yuan et al., we calculated the Global Field Power time course (GFP), which is a standard deviation across electrodes. We then found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected via a grid search for which the microstate time course have the highest correlation with the fMRI data. The peaks of the GFP were used since they reflect a 'pure state' of the brain activity.
+Following Yuan et al., we calculated the Global Field Power time course (GFP), which is the standard deviation across electrodes. We then found topographies corresponding to peaks in the GFP. The parameters of the peak detection algorithm were selected via a grid search for which the microstate time course have the highest correlation with the fMRI data. The peaks of the GFP were used since they reflect a 'pure state' of the brain activity.
 
 \begin{figure}[!ht]
     \centering
@@ -74,7 +74,7 @@ Following Yuan et al., we calculated the Global Field Power time course (GFP), w
 \end{figure}
 
 \subsection{Independent Component Analysis}
-We concatenated the topographies from peaks across subjects, and ran ICA. Our algorithm of choice was FastICA \cite{fast_robust} with the cubic non-linearity function. The resulting separation matrix was applied to the continuous EEG to obtain time courses of the microstates.
+We concatenated the topographies from the peaks across subjects, and ran ICA on the total of 476977 peaks. Our algorithm of choice was FastICA \cite{fast_robust} with the cubic non-linearity function. The resulting separation matrix was applied to the continuous EEG to obtain time courses of the microstates.
 
 \begin{figure}[!ht]
     \centering
@@ -114,6 +114,7 @@ The elastic-net selects variables like the lasso algorithm, and shrinks together
 \alpha |\beta_j| + (1-\alpha) \beta_j^2
 \end{pmatrix}
 \end{equation}
+where $\beta_j$ are the coefficients, $\alpha \in [0;1]$ is the compromise between the $L_1$ and $L_2$ norm, and $\lambda$ is the penalty on the coefficients.
 The elastic-net is implemented with the least angle regression (LAR) method. The full path of the LAR with $\lambda=0$ yields the general linear model.
 
 
@@ -124,8 +125,7 @@ We chose to randomly divide the data into the 5 folds to adjust to the fact that
 \subsection{Model and peak size}
 The GFP is an sensitive measure and it is not clear whether all local peaks of the GFP should be included as input in estimating the decomposition matrix, which is later applied on the entire time course of the EEG signal. The local peaks of the GFP can be seen as 'raw' microstates. We performed a grid search altering the minimum width and height of the peaks. The width and height was linearly spaced between 0 and 100 ms, and max(GFP)/2 respectively, constraining the transient brain state (peak) to be quasi stable near 100 ms.
 It would have been ideal to use the validation error of the EN to find the optimal design settings in the peak detection. However, it has shown to be a very hard task to predict the DMN, Instead, we used the design setting in which gave the single maximum correlation of one time course of a microstate with the DMN in the EN model.
-We performed 5-fold cross-validation with $\lambda$ log-spaced in the interval 
-[ $10^{-4}$ ; $10^2$] in estimating the EN model.
+We performed 5-fold cross-validation with $\lambda$ log-spaced with 100 values in the interval [ $10^{-4}$ ; $10^2$] and $\lambda=0$, in estimating the EN model.
 \subsection{Robustness of the microstates}
 In order to evaluate the robustness of the algorithm of finding microstates, we altered the minimum peak width and height, as described above, in the peak detection and performed 8-fold cross validation omitting one subject at each fold. In each fold, for a specific set of parameters in the peak detection, we found a set of microstates ordered by the power explained. We aligned the matrices to be of the same sign using correlation of the first column of the mixing matrices with respect to the first fold. We compared the sum of the Frobenius norm of the deviation from the mean of the decomposition matrices. We found that the robustness decreased in both directions. Hence, no restrictions should be given for the peak detection algorithm for the maximum robustness. A table of robustness is given in the appendix in table \ref{table:similarity}.
 \section{Results}
@@ -163,11 +163,10 @@ The magnitude of the correlations found in our experiment corresponds well to th
 
 
 \section{Conclusions}
-We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates, followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is very small. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varxying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
+We have shown that the temporally slow hemodynamic fluctuations of the BOLD default mode network is correlated with the temporally fast, spontaneous electrophysiological activity reflected in the EEG microstates, followed by the approach in \cite{Yuan20122062}. However, the magnitude of the found correlation, even though significant, is very small. A model for predicting the signal has been postulated with 13 microstate time courses as regressors. The varying number of included microstates and high prediction error leaves room for further work in investigating the relation between the EEG microstates and the default mode network, to fully uncover the relation.
 
 \section{Acknowledgements}
-The data has been made available by courtesy of Glostrup Hospital and its employees, Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and
-Andreas Trier Poulsen, both from DTU Compute, for supervising.
+We gratefully acknowledge the access to the data granted by  Egill Rostrup and Ulrich Lindberg. We would like to thank Lars Kai Hansen and Andreas Trier Poulsen, both from DTU Compute, for supervising.
 \bibliographystyle{IEEEbib}
 \bibliography{refs}
 
